@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Dima\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Dima\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_StrategioPrototype.1548344037.00" t="ExcludeRecursive" />
+    <e p="D:\Doc\Unity\StrategioPrototype" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Scripts" t="Include">
+          <e p="Addons" t="Include">
+            <e p="DragCamera2D" t="Include">
+              <e p="Scripts" t="Include">
+                <e p="DragCamera2D.cs" t="Include" />
+              </e>
+            </e>
+          </e>
+          <e p="Strategio" t="Include">
+            <e p="AuthoringGameObjects" t="Include">
+              <e p="ConvertGameArena.cs" t="Include" />
+              <e p="ConvertSpawnerEntity.cs" t="Include" />
+            </e>
+            <e p="Components" t="Include">
+              <e p="Influencer.cs" t="Include" />
+              <e p="Spawner.cs" t="Include" />
+            </e>
+            <e p="Systems" t="Include">
+              <e p="InfluenceSystem.cs" t="Include" />
+              <e p="SetInfluenceTextureSystem.cs" t="Include" />
+            </e>
+            <e p="Util" t="Include">
+              <e p="NativeArray2D.cs" t="Include" />
+              <e p="TextureEditorView.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Shaders" t="Include">
+          <e p="CustomFuncCombineInfluenceTexture.hlsl" t="Include" />
+        </e>
+      </e>
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="StrategioPrototype.sln" t="IncludeFlat" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
