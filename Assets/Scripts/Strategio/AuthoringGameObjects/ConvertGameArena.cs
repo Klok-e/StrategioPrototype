@@ -3,41 +3,21 @@ using Strategio.Util;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Rendering;
+using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 
 namespace Strategio.AuthoringGameObjects
 {
-    public struct GameArenaComponent : ISharedComponentData, IEquatable<GameArenaComponent>
+    public struct GameArenaComponent : IComponentData
     {
-        public GameObject arena;
-
-        // Don't change after initialization!
         public int2 mapSize;
+        public int influenceResolution;
+    }
 
-        public SpriteRenderer spriteRenderer;
-
-        public bool Equals(GameArenaComponent other)
-        {
-            return Equals(arena, other.arena) && mapSize.Equals(other.mapSize) &&
-                   Equals(spriteRenderer, other.spriteRenderer);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is GameArenaComponent other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = (arena != null ? arena.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ mapSize.GetHashCode();
-                hashCode = (hashCode * 397) ^ (spriteRenderer != null ? spriteRenderer.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
+    public struct GameArenaTag : IComponentData
+    {
     }
 
     [DisallowMultipleComponent]
@@ -45,49 +25,56 @@ namespace Strategio.AuthoringGameObjects
     public class ConvertGameArena : MonoBehaviour, IConvertGameObjectToEntity
     {
         [SerializeField]
-        private Material arenaMat;
+        private Texture2D mainTex;
 
         [SerializeField]
-        private Sprite arenaSprite;
+        private RenderMesh arenaMesh;
+
+        [SerializeField]
+        private float z;
 
         [SerializeField]
         private DragCamera2D camera2D;
 
         [SerializeField]
-        public int2 mapSize = new int2(50, 50);
+        private int2 mapSize = new int2(50, 50);
+
+        [SerializeField]
+        private int influenceResolution;
 
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            var arena = new GameObject("ArenaSprite");
-
-            var spriteRenderer = arena.AddComponent<SpriteRenderer>();
-            spriteRenderer.material = arenaMat;
-            spriteRenderer.sprite = arenaSprite;
-            spriteRenderer.drawMode = SpriteDrawMode.Tiled;
-            spriteRenderer.size = new Vector2(mapSize.x, mapSize.y);
-            camera2D.cameraMaxX = 25f;
-            camera2D.cameraMaxY = 25f;
-            camera2D.cameraMinX = -25f;
-            camera2D.cameraMinY = -25f;
-
-            dstManager.AddSharedComponentData(entity, new GameArenaComponent
+            var ent = dstManager.CreateEntity();
+            dstManager.AddComponentData(ent, new GameArenaComponent
             {
-                arena = arena,
+                influenceResolution = influenceResolution,
                 mapSize = mapSize,
-                spriteRenderer = spriteRenderer,
             });
+
+            camera2D.maxZoom = math.min(mapSize.x / 3, mapSize.y / 3);
+            camera2D.cameraMaxX = mapSize.x - mapSize.x / 2f;
+            camera2D.cameraMaxY = mapSize.y - mapSize.y / 2f;
+            camera2D.cameraMinX = -mapSize.x + mapSize.x / 2f;
+            camera2D.cameraMinY = -mapSize.x + mapSize.x / 2f;
+
+            arenaMesh.material.SetTexture("_MainTex", mainTex);
+
+            var pos = transform.position;
+            pos.z = z;
+            dstManager.SetComponentData(entity, new Translation {Value = pos});
+            dstManager.AddComponentData(entity, new NonUniformScale {Value = math.float3(mapSize.xy, 1f)});
+            dstManager.AddSharedComponentData(entity, arenaMesh);
+            dstManager.AddComponentData(entity, new GameArenaTag());
         }
     }
 
     [UpdateInGroup(typeof(InitializationSystemGroup))]
     public class InitDataSystem : ComponentSystem
     {
-        public GameObject Arena { get; private set; }
-
         // Don't change after initialization!
         public int2 MapSize { get; private set; }
 
-        public SpriteRenderer SpriteRenderer { get; private set; }
+        public int MapResolution { get; private set; }
 
         public Texture2D InfluenceTexture { get; private set; }
 
@@ -95,16 +82,17 @@ namespace Strategio.AuthoringGameObjects
 
         protected override void OnUpdate()
         {
-            Entities.ForEach((Entity ent, GameArenaComponent gameArena) =>
+            Entities.ForEach((Entity ent, ref GameArenaComponent gameArena) =>
             {
-                Arena = gameArena.arena;
+                PostUpdateCommands.DestroyEntity(ent);
                 MapSize = gameArena.mapSize;
-                SpriteRenderer = gameArena.spriteRenderer;
-                EntityManager.DestroyEntity(ent);
+                MapResolution = gameArena.influenceResolution;
 
-                InfluenceTexture = new Texture2D(MapSize.x, MapSize.y, GraphicsFormat.R32_SFloat,
+                InfluenceTexture = new Texture2D(MapSize.x * MapResolution, MapSize.y * MapResolution,
+                    GraphicsFormat.R32_SFloat,
                     TextureCreationFlags.None);
-                Influences = new NativeArray2D<int>(MapSize.x, MapSize.y, Allocator.Persistent);
+                Influences = new NativeArray2D<int>(MapSize.x * MapResolution, MapSize.y * MapResolution,
+                    Allocator.Persistent);
             });
         }
 

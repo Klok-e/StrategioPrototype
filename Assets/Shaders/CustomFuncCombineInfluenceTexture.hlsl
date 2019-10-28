@@ -9,17 +9,27 @@ void CombineInflTexture_float(float Influence,
                             float4 Side2Col,
                             float InflGrad,
                             float4 SeparatorColor,
+                            float Margin,
+                            float Gamma,
+                            float PowerMult,
                             out float4 FinalColor)
 {
     float4 sideColor;
-    /*if(InflGrad>0.05)
-        sideColor = SeparatorColor;
-    else*/ if(Influence > 0.5)
+    float power;
+    if(Influence > 0.5+Margin){
         sideColor = Side1Col;
-    else
+        power = (Influence-(0.5+Margin))/(0.5-Margin);
+    }
+    else if (Influence < 0.5-Margin){
         sideColor = Side2Col;
+        power = 1. - Influence/(0.5-Margin);
+    }
+    else{
+        sideColor = SeparatorColor;
+        power = abs(Influence-0.5)/Margin;
+    }
     // now mix tex and col
-    FinalColor = lerp(sideColor,BgTexture,Interp);
+    FinalColor = lerp(BgTexture,sideColor,Interp+pow(abs(power*PowerMult),1./Gamma));
 }
 
 #endif

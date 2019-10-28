@@ -5,6 +5,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
+using Unity.Rendering;
 using UnityEngine;
 
 namespace Strategio.Systems
@@ -13,32 +14,23 @@ namespace Strategio.Systems
     [AlwaysUpdateSystem]
     public class SetInfluenceTextureSystem : JobComponentSystem
     {
-        public const int InfluenceCutoff = 1000;
+        public const int InfluenceCutoff = 50;
         public JobHandle LatestJob { get; private set; }
 
         //cached stuff
-        private static readonly int Property = Shader.PropertyToID("_InfluenceMap");
-
         private InitDataSystem _dataSystem;
         private InfluenceSystem _influenceSystem;
-
-        //private TextureEditorView _texView;
 
         protected override void OnCreate()
         {
             base.OnCreate();
             _dataSystem = World.GetOrCreateSystem<InitDataSystem>();
             _influenceSystem = World.GetOrCreateSystem<InfluenceSystem>();
-            //_texView = new GameObject("TextureView").AddComponent<TextureEditorView>();
         }
 
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
-            _dataSystem.InfluenceTexture.Apply();
-            //_texView.texture = _dataSystem.InfluenceTexture;
-            _dataSystem.SpriteRenderer.material.SetTexture(Property, _dataSystem.InfluenceTexture);
             var tex = _dataSystem.InfluenceTexture.GetRawTextureData<float>();
-
             var j1 = new SetTextureJob
             {
                 texture = tex,

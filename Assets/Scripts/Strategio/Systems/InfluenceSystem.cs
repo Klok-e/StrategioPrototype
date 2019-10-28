@@ -1,5 +1,6 @@
 ﻿using Strategio.AuthoringGameObjects;
 using Strategio.Components;
+using Strategio.GameConfigs;
 using Strategio.Util;
 using Unity.Burst;
 using Unity.Collections;
@@ -13,14 +14,14 @@ namespace Strategio.Systems
     [AlwaysUpdateSystem]
     public class InfluenceSystem : JobComponentSystem
     {
-        public const int Falloff = 50;
+        public const int Falloff = 1;
         public JobHandle LatestJob { get; private set; }
         private InitDataSystem _dataSystem;
         private SetInfluenceTextureSystem _influenceTextureSystem;
 
         // cached stuff
-        private NativeQueue<InflAndPos> _inflQueue;
-        private NativeList<InflAndPos> _inflList;
+        private NativeQueue<InflPosSide> _inflQueue;
+        private NativeList<InflPosSide> _inflList;
 
         protected override void OnCreate()
         {
@@ -28,8 +29,8 @@ namespace Strategio.Systems
             _dataSystem = EntityManager.World.GetOrCreateSystem<InitDataSystem>();
             _influenceTextureSystem = EntityManager.World.GetOrCreateSystem<SetInfluenceTextureSystem>();
 
-            _inflQueue = new NativeQueue<InflAndPos>(Allocator.Persistent);
-            _inflList = new NativeList<InflAndPos>(Allocator.Persistent);
+            _inflQueue = new NativeQueue<InflPosSide>(Allocator.Persistent);
+            _inflList = new NativeList<InflPosSide>(Allocator.Persistent);
         }
 
         protected override void OnDestroy()
@@ -46,6 +47,7 @@ namespace Strategio.Systems
             {
                 influencers = _inflQueue.AsParallelWriter(),
                 arenaSize = _dataSystem.MapSize,
+                mapRes = _dataSystem.MapResolution,
             };
             var j2 = new AddInflToList
             {
@@ -69,24 +71,27 @@ namespace Strategio.Systems
             return LatestJob;
         }
 
-        private struct InflAndPos
+        private struct InflPosSide
         {
-            public Influencer infl;
+            public InfluencerComponent infl;
             public int2 pos;
+            public SideComponent side;
         }
 
         [BurstCompile]
-        private struct GetInfluencersJob : IJobForEach_CC<Influencer, Translation>
+        private struct GetInfluencersJob : IJobForEach_CCC<InfluencerComponent, Translation, SideComponent>
         {
-            public NativeQueue<InflAndPos>.ParallelWriter influencers;
+            public NativeQueue<InflPosSide>.ParallelWriter influencers;
             public int2 arenaSize;
+            public int mapRes;
 
-            public void Execute(ref Influencer infl, ref Translation transl)
+            public void Execute(ref InfluencerComponent infl, ref Translation transl, ref SideComponent side)
             {
-                influencers.Enqueue(new InflAndPos
+                influencers.Enqueue(new InflPosSide
                 {
                     infl = infl,
-                    pos = math.int2(math.floor(transl.Value.xy)) + arenaSize / 2
+                    pos = math.int2(math.floor((transl.Value.xy + math.float2(arenaSize) / 2) * mapRes)),
+                    side = side
                 });
             }
         }
@@ -94,8 +99,8 @@ namespace Strategio.Systems
         [BurstCompile]
         private struct AddInflToList : IJob
         {
-            public NativeQueue<InflAndPos> influencers;
-            public NativeList<InflAndPos> inflList;
+            public NativeQueue<InflPosSide> influencers;
+            public NativeList<InflPosSide> inflList;
 
             public void Execute()
             {
@@ -112,7 +117,7 @@ namespace Strategio.Systems
             public NativeArray2D<int> influencesMap;
 
             [ReadOnly]
-            public NativeList<InflAndPos> influencers;
+            public NativeList<InflPosSide> influencers;
 
             public void Execute(int index)
             {
@@ -123,7 +128,8 @@ namespace Strategio.Systems
                     var t = influencers[i];
                     var infl = t.infl;
                     var pos = t.pos;
-                    int sideMul = infl.side == Side.Friend ? 1 : -1;
+                    var side = t.side;
+                    int sideMul = side.side == Side.Player1 ? 1 : -1;
                     int dist = (int) math.distance(math.float2(x, y), math.float2(pos));
                     sum += math.max(0, infl.num - dist * Falloff) * sideMul;
                 }
@@ -135,7 +141,7 @@ namespace Strategio.Systems
         [BurstCompile]
         private struct ClearListJob : IJob
         {
-            public NativeList<InflAndPos> inflList;
+            public NativeList<InflPosSide> inflList;
 
             public void Execute()
             {
