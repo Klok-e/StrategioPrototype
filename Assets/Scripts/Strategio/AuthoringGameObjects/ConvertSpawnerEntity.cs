@@ -14,6 +14,12 @@ namespace Strategio.AuthoringGameObjects
     public class ConvertSpawnerEntity : MonoBehaviour, IConvertGameObjectToEntity
     {
         [SerializeField]
+        private Texture2D mainTex;
+
+        [SerializeField]
+        private Color tint;
+
+        [SerializeField]
         private RenderMesh mesh;
 
         [SerializeField]
@@ -30,12 +36,18 @@ namespace Strategio.AuthoringGameObjects
             Debug.Assert(side.side != Side.Invalid);
             Debug.Assert(influencerComponent.num > 0);
 
+            //TODO: wait until Unity decides to implement PerRendererData and MaterialPropertyBlock in ECS or do it myself
+            var mat = new Material(mesh.material) {mainTexture = mainTex};
+            mat.SetColor("_TintColor", tint);
+            mesh.material = mat;
+
             dstManager.AddComponentData(entity,
                 new SpawnerComponent
                 {
                     spawnProgress = 0,
                     unitType = UnitType.Simple,
                 });
+            dstManager.AddComponentData(entity,new UnitComponent{});
             dstManager.AddComponentData(entity, influencerComponent);
             dstManager.AddComponentData(entity, side);
             dstManager.AddComponentData(entity, new PathfindingComponent {isOrderedToMove = 0});
