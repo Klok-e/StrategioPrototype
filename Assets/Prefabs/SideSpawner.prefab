@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6055ff8132a68af49815112e8de76a85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colliderRadius: 1
+  mainTex: {fileID: 0}
+  tint: {r: 0, g: 0, b: 0, a: 0}
   mesh:
     mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
     material: {fileID: 2100000, guid: e5de9439f92ee1e418b937b49c103c45, type: 2}
@@ -52,8 +55,9 @@ MonoBehaviour:
     castShadows: 0
     receiveShadows: 0
   z: -0.2
-  influencer:
-    num: 10000
+  influencerComponent:
+    num: 0
+  side:
     side: 0
 --- !u!114 &3543170452385037098
 MonoBehaviour:

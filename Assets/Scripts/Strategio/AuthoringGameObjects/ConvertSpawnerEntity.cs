@@ -1,4 +1,5 @@
 ﻿using Strategio.Components;
+using Strategio.Components.Physics;
 using Strategio.GameConfigs;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -13,6 +14,9 @@ namespace Strategio.AuthoringGameObjects
     [RequiresEntityConversion]
     public class ConvertSpawnerEntity : MonoBehaviour, IConvertGameObjectToEntity
     {
+        [SerializeField]
+        private float colliderRadius;
+
         [SerializeField]
         private Texture2D mainTex;
 
@@ -47,7 +51,8 @@ namespace Strategio.AuthoringGameObjects
                     spawnProgress = 0,
                     unitType = UnitType.Simple,
                 });
-            dstManager.AddComponentData(entity,new UnitComponent{});
+            dstManager.AddComponentData(entity, new UnitComponent {unitType = UnitType.Spawner});
+            dstManager.AddComponentData(entity, new CircleColliderComponent {radius = colliderRadius});
             dstManager.AddComponentData(entity, influencerComponent);
             dstManager.AddComponentData(entity, side);
             dstManager.AddComponentData(entity, new PathfindingComponent {isOrderedToMove = 0});

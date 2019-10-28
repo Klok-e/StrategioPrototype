@@ -22,6 +22,10 @@
             <e p="Components" t="Include">
               <e p="InfluencerComponent.cs" t="Include" />
               <e p="PathfindingComponent.cs" t="Include" />
+              <e p="Physics" t="Include">
+                <e p="CircleColliderComponent.cs" t="Include" />
+                <e p="CollisionComponent.cs" t="Include" />
+              </e>
               <e p="SideComponent.cs" t="Include" />
               <e p="SpawnerComponent.cs" t="Include" />
               <e p="Ui" t="Include">
@@ -37,6 +41,10 @@
             <e p="Systems" t="Include">
               <e p="ApplyTextureSystem.cs" t="Include" />
               <e p="InfluenceSystem.cs" t="Include" />
+              <e p="Physics" t="Include">
+                <e p="CircleCollisionResolveSystem.cs" t="Include" />
+                <e p="CirclePhysics2DSystem.cs" t="Include" />
+              </e>
               <e p="SetInfluenceTextureSystem.cs" t="Include" />
               <e p="UnitPathfindSystem.cs" t="Include" />
               <e p="UserClickEventProcessorEventSystem.cs" t="Include" />
