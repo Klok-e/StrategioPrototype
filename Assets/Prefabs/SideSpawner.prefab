@@ -56,7 +56,7 @@ MonoBehaviour:
     receiveShadows: 0
   z: -0.2
   influencerComponent:
-    num: 0
+    num: 10
   side:
     side: 0
 --- !u!114 &3543170452385037098

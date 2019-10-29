@@ -58,7 +58,6 @@ namespace Strategio.Systems
             {
                 influencesMap = infls,
                 influencers = _inflList,
-                resolution = _dataSystem.MapResolution,
             };
             var j4 = new ClearListJob
             {
@@ -88,6 +87,7 @@ namespace Strategio.Systems
 
             public void Execute(ref InfluencerComponent infl, ref Translation transl, ref SideComponent side)
             {
+                infl.num *= mapRes;
                 influencers.Enqueue(new InflPosSide
                 {
                     infl = infl,
@@ -114,8 +114,6 @@ namespace Strategio.Systems
         [BurstCompile]
         private struct SetInfluenceArrayJob : IJobParallelFor
         {
-            public int resolution;
-
             [WriteOnly] public NativeArray2D<int> influencesMap;
 
             [ReadOnly] public NativeList<InflPosSide> influencers;
@@ -131,8 +129,8 @@ namespace Strategio.Systems
                     var pos = t.pos;
                     var side = t.side;
                     int sideMul = side.side == Side.Player1 ? 1 : -1;
-                    float dist = math.distance(math.float2(x, y), math.float2(pos)) / resolution;
-                    sum += math.max(0, infl.num - (int) (dist * Falloff)) * sideMul;
+                    float dist = math.distance(math.float2(x, y), math.float2(pos));
+                    sum += math.max(0, (int) (infl.num - dist * Falloff)) * sideMul;
                 }
 
                 influencesMap[index] = sum;
