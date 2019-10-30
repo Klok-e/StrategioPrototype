@@ -87,6 +87,7 @@ namespace Strategio.Systems
 
             public void Execute(ref InfluencerComponent infl, ref Translation transl, ref SideComponent side)
             {
+                infl.num *= mapRes;
                 influencers.Enqueue(new InflPosSide
                 {
                     infl = infl,
@@ -113,11 +114,9 @@ namespace Strategio.Systems
         [BurstCompile]
         private struct SetInfluenceArrayJob : IJobParallelFor
         {
-            [WriteOnly]
-            public NativeArray2D<int> influencesMap;
+            [WriteOnly] public NativeArray2D<int> influencesMap;
 
-            [ReadOnly]
-            public NativeList<InflPosSide> influencers;
+            [ReadOnly] public NativeList<InflPosSide> influencers;
 
             public void Execute(int index)
             {
@@ -130,8 +129,8 @@ namespace Strategio.Systems
                     var pos = t.pos;
                     var side = t.side;
                     int sideMul = side.side == Side.Player1 ? 1 : -1;
-                    int dist = (int) math.distance(math.float2(x, y), math.float2(pos));
-                    sum += math.max(0, infl.num - dist * Falloff) * sideMul;
+                    float dist = math.distance(math.float2(x, y), math.float2(pos));
+                    sum += math.max(0, (int) (infl.num - dist * Falloff)) * sideMul;
                 }
 
                 influencesMap[index] = sum;

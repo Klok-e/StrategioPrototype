@@ -325,11 +325,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3543170452385037101, guid: 73cb8a28a227151478de7399f1f4afb2,
         type: 3}
-      propertyPath: influencerComponent.num
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 3543170452385037101, guid: 73cb8a28a227151478de7399f1f4afb2,
-        type: 3}
       propertyPath: mainTex
       value: 
       objectReference: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
@@ -618,11 +613,6 @@ PrefabInstance:
         type: 3}
       propertyPath: side.side
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3543170452385037101, guid: 73cb8a28a227151478de7399f1f4afb2,
-        type: 3}
-      propertyPath: influencerComponent.num
-      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3543170452385037101, guid: 73cb8a28a227151478de7399f1f4afb2,
         type: 3}
