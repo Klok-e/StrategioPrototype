@@ -43,6 +43,7 @@ namespace Strategio.Systems
         protected override JobHandle OnUpdate(JobHandle inputDeps)
         {
             var infls = _dataSystem.Influences;
+            _inflList.Clear();
             var j1 = new GetInfluencersJob
             {
                 influencers = _inflQueue.AsParallelWriter(),
@@ -85,12 +86,15 @@ namespace Strategio.Systems
             public int2 arenaSize;
             public int mapRes;
 
-            public void Execute(ref InfluencerComponent infl, ref Translation transl, ref SideComponent side)
+            public void Execute([ReadOnly] ref InfluencerComponent infl,
+                [ReadOnly] ref Translation transl,
+                [ReadOnly] ref SideComponent side)
             {
-                infl.num *= mapRes;
+                var inflCpy = infl;
+                inflCpy.num *= mapRes;
                 influencers.Enqueue(new InflPosSide
                 {
-                    infl = infl,
+                    infl = inflCpy,
                     pos = math.int2(math.floor((transl.Value.xy + math.float2(arenaSize) / 2) * mapRes)),
                     side = side
                 });
@@ -131,6 +135,8 @@ namespace Strategio.Systems
                     int sideMul = side.side == Side.Player1 ? 1 : -1;
                     float dist = math.distance(math.float2(x, y), math.float2(pos));
                     sum += math.max(0, (int) (infl.num - dist * Falloff)) * sideMul;
+                    if ((infl.num - dist * Falloff) > 0)
+                        continue;
                 }
 
                 influencesMap[index] = sum;
