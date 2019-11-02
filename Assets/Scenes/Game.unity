@@ -726,7 +726,7 @@ PrefabInstance:
     - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
         type: 3}
       propertyPath: influenceResolution
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eeebfaaeb34807c4181dcad5f7983bf7, type: 3}
