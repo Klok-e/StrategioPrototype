@@ -48,6 +48,7 @@
               </e>
               <e p="SetInfluenceTextureSystem.cs" t="Include" />
               <e p="UnitPathfindSystem.cs" t="Include" />
+              <e p="UnitSpawnerSystem.cs" t="Include" />
               <e p="UserClickEventProcessorEventSystem.cs" t="Include" />
             </e>
             <e p="Ui" t="Include">

@@ -1,6 +1,8 @@
-﻿using Strategio.Components;
+﻿using System;
+using Strategio.Components;
 using Strategio.Components.Physics;
 using Strategio.GameConfigs;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Rendering;
@@ -40,6 +42,11 @@ namespace Strategio.AuthoringGameObjects
             Debug.Assert(side.side != Side.Invalid);
             Debug.Assert(influencerComponent.num > 0);
 
+            UnitTypeConverter.InitArchetypes(dstManager);
+            var tmpArr = new NativeArray<EntityArchetype>(UnitTypeConverter.archetypes, Allocator.Temp);
+            var arch = UnitType.Spawner.GetArchetype(tmpArr);
+            var ent = dstManager.CreateEntity(arch);
+
             //TODO: wait until Unity decides to implement PerRendererData and MaterialPropertyBlock in ECS or do it myself
             var mat = new Material(mesh.material) {mainTexture = mainTex};
             mat.SetColor("_TintColor", tint);
@@ -61,6 +68,9 @@ namespace Strategio.AuthoringGameObjects
             pos.z = z;
             dstManager.SetComponentData(entity, new Translation {Value = pos});
             dstManager.AddSharedComponentData(entity, mesh);
+
+            dstManager.DestroyEntity(ent);
+            tmpArr.Dispose();
         }
     }
 }
