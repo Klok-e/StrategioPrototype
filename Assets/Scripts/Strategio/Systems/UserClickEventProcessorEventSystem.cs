@@ -66,6 +66,7 @@ namespace Strategio.Systems
         }
 
         [BurstCompile]
+        [RequireComponentTag(typeof(PlayerCanOrderToMoveComponentTag))]
         private struct ProcessLeftRightClicksJob : IJobForEach_CC<PathfindingComponent, SideComponent>
         {
             [ReadOnly]

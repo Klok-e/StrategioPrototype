@@ -56,6 +56,7 @@ namespace Strategio.AuthoringGameObjects
             dstManager.AddComponentData(entity, influencerComponent);
             dstManager.AddComponentData(entity, side);
             dstManager.AddComponentData(entity, new PathfindingComponent {isOrderedToMove = 0});
+            dstManager.AddComponentData(entity, new PlayerCanOrderToMoveComponentTag());
             var pos = transform.position;
             pos.z = z;
             dstManager.SetComponentData(entity, new Translation {Value = pos});

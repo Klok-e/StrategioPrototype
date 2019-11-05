@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$USER_HOME$/.Rider2019.2/system/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.Rider2019.2/system/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_StrategioPrototype.-1473561003.00" t="ExcludeRecursive" />
-    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+    <e p="C:\Users\Dima\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Dima\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_StrategioPrototype.1548344037.00" t="ExcludeRecursive" />
+    <e p="D:\Doc\Unity\StrategioPrototype" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Scripts" t="Include">
@@ -26,6 +26,7 @@
                 <e p="CircleColliderComponent.cs" t="Include" />
                 <e p="CollisionComponent.cs" t="Include" />
               </e>
+              <e p="PlayerCanOrderToMoveComponentTag.cs" t="Include" />
               <e p="SideComponent.cs" t="Include" />
               <e p="SpawnerComponent.cs" t="Include" />
               <e p="Ui" t="Include">
@@ -63,10 +64,10 @@
           <e p="CustomFuncCombineInfluenceTexture.hlsl" t="Include" />
         </e>
       </e>
-      <e p="StrategioPrototype.sln" t="IncludeFlat" />
-      <e p="Temp/bin" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
+      <e p="StrategioPrototype.sln" t="IncludeFlat" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
     </e>
   </component>
 </project>
