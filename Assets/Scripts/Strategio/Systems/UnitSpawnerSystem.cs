@@ -7,31 +7,14 @@ using Unity.Transforms;
 
 namespace Strategio.Systems
 {
-    public class UnitSpawnerSystem : JobComponentSystem
+    public class UnitSpawnerSystem : ComponentSystem
     {
-        protected override JobHandle OnUpdate(JobHandle inputDeps)
+        protected override void OnUpdate()
         {
-            return inputDeps;
-        }
-
-        private struct SpawnStuff : IJobForEach_CC<SpawnerComponent, Translation>
-        {
-            public EntityCommandBuffer.Concurrent buffer;
-
-            public void Execute(ref SpawnerComponent c0, ref Translation c1)
+            Entities.ForEach((ref SpawnerComponent spawner, ref Translation translation) =>
             {
-                switch (c0.unitType)
-                {
-                    case UnitType.Invalid:
-                        break;
-                    case UnitType.Simple:
-                        break;
-                    case UnitType.Spawner:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
+                
+            });
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Strategio.Systems
             Influences = new NativeArray2D<int>(MapSize.x * MapResolution, MapSize.y * MapResolution,
                 Allocator.Persistent);
             archetypes =
-                new NativeArray<EntityArchetype>(UnitTypeConverter.InitArchetypes(EntityManager), Allocator.Persistent);
+                new NativeArray<EntityArchetype>(UnitTypeUtil.InitArchetypes(EntityManager), Allocator.Persistent);
         }
 
         protected override void OnUpdate()

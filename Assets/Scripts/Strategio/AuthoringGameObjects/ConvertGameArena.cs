@@ -48,7 +48,7 @@ namespace Strategio.AuthoringGameObjects
         {
             dstManager.World.GetOrCreateSystem<InitDataSystem>()
                       .Init(mapSize, influenceResolution, side1Config, side2Config);
-            UnitTypeConverter.InitArchetypes(dstManager);
+            UnitTypeUtil.InitArchetypes(dstManager);
 
             camera2D.maxZoom = math.min(mapSize.x / 3, mapSize.y / 3);
             camera2D.cameraMaxX = mapSize.x - mapSize.x / 2f;

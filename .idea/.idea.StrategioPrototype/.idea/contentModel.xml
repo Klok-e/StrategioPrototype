@@ -37,8 +37,9 @@
             <e p="GameConfigs" t="Include">
               <e p="Sides.cs" t="Include" />
               <e p="UnitRenderConfig.cs" t="Include" />
-              <e p="UnitTypeConverter.cs" t="Include" />
+              <e p="UnitStats.cs" t="Include" />
               <e p="UnitTypes.cs" t="Include" />
+              <e p="UnitTypeUtil.cs" t="Include" />
             </e>
             <e p="Systems" t="Include">
               <e p="ApplyTextureSystem.cs" t="Include" />

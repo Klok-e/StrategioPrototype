@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Strategio.Components;
 using Strategio.Components.Physics;
 using Unity.Collections;
@@ -10,15 +9,7 @@ using UnityEngine;
 
 namespace Strategio.GameConfigs
 {
-    public struct UnitStats
-    {
-        public float moveSpeed;
-        public float attack;
-        public float requiredProgress;
-        public float health;
-    }
-
-    public static class UnitTypeConverter
+    public static class UnitTypeUtil
     {
         public static UnitStats GetStats(this UnitType unit)
         {
@@ -64,7 +55,9 @@ namespace Strategio.GameConfigs
                     ComponentType.ReadWrite<PathfindingComponent>(),
                     ComponentType.ReadWrite<Translation>(),
                     ComponentType.ReadWrite<RenderMesh>(),
-                    ComponentType.ReadWrite<Scale>()),
+                    ComponentType.ReadWrite<Scale>(),
+                    ComponentType.ReadWrite<LocalToWorld>(),
+                    ComponentType.ReadWrite<Rotation>()),
 
                 // Spawner = 2
                 manager.CreateArchetype(
@@ -81,6 +74,10 @@ namespace Strategio.GameConfigs
                     ComponentType.ReadWrite<Rotation>())
             };
             return lst.ToArray();
+        }
+
+        public static void SetCommonConfigComponentsToEntity(EntityManager manager, Entity entity, UnitCommonConfig config)
+        {
         }
 
         public static EntityArchetype GetArchetype(this UnitType unit, NativeArray<EntityArchetype> archs)
