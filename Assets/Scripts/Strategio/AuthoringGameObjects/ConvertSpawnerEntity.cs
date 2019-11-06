@@ -45,6 +45,7 @@ namespace Strategio.AuthoringGameObjects
             UnitTypeConverter.InitArchetypes(dstManager);
             var tmpArr = new NativeArray<EntityArchetype>(UnitTypeConverter.archetypes, Allocator.Temp);
             var arch = UnitType.Spawner.GetArchetype(tmpArr);
+            tmpArr.Dispose();
             var ent = dstManager.CreateEntity(arch);
 
             //TODO: wait until Unity decides to implement PerRendererData and MaterialPropertyBlock in ECS or do it myself
@@ -64,6 +65,7 @@ namespace Strategio.AuthoringGameObjects
             dstManager.SetComponentData(ent, side);
             dstManager.SetComponentData(ent, new PathfindingComponent {isOrderedToMove = 0});
             dstManager.AddComponentData(ent, new PlayerCanOrderToMoveComponentTag());
+
             var pos = transform.position;
             pos.z = z;
             dstManager.SetComponentData(ent, new Translation {Value = pos});
@@ -71,7 +73,6 @@ namespace Strategio.AuthoringGameObjects
             dstManager.SetComponentData(ent, new Scale {Value = transform.localScale.x});
 
             dstManager.DestroyEntity(entity);
-            tmpArr.Dispose();
         }
     }
 }

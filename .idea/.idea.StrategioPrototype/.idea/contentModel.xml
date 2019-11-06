@@ -41,6 +41,7 @@
             </e>
             <e p="Systems" t="Include">
               <e p="ApplyTextureSystem.cs" t="Include" />
+              <e p="d.cs" t="Include" />
               <e p="InfluenceSystem.cs" t="Include" />
               <e p="Physics" t="Include">
                 <e p="CircleCollisionResolveSystem.cs" t="Include" />
