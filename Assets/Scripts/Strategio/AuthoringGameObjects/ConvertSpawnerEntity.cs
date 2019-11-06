@@ -52,24 +52,25 @@ namespace Strategio.AuthoringGameObjects
             mat.SetColor("_TintColor", tint);
             mesh.material = mat;
 
-            dstManager.AddComponentData(entity,
+            dstManager.SetComponentData(ent,
                 new SpawnerComponent
                 {
                     spawnProgress = 0,
                     unitType = UnitType.Simple,
                 });
-            dstManager.AddComponentData(entity, new UnitComponent {unitType = UnitType.Spawner});
-            dstManager.AddComponentData(entity, new CircleColliderComponent {radius = colliderRadius});
-            dstManager.AddComponentData(entity, influencerComponent);
-            dstManager.AddComponentData(entity, side);
-            dstManager.AddComponentData(entity, new PathfindingComponent {isOrderedToMove = 0});
-            dstManager.AddComponentData(entity, new PlayerCanOrderToMoveComponentTag());
+            dstManager.SetComponentData(ent, new UnitComponent {unitType = UnitType.Spawner});
+            dstManager.SetComponentData(ent, new CircleColliderComponent {radius = colliderRadius});
+            dstManager.SetComponentData(ent, influencerComponent);
+            dstManager.SetComponentData(ent, side);
+            dstManager.SetComponentData(ent, new PathfindingComponent {isOrderedToMove = 0});
+            dstManager.AddComponentData(ent, new PlayerCanOrderToMoveComponentTag());
             var pos = transform.position;
             pos.z = z;
-            dstManager.SetComponentData(entity, new Translation {Value = pos});
-            dstManager.AddSharedComponentData(entity, mesh);
+            dstManager.SetComponentData(ent, new Translation {Value = pos});
+            dstManager.SetSharedComponentData(ent, mesh);
+            dstManager.SetComponentData(ent, new Scale {Value = transform.localScale.x});
 
-            dstManager.DestroyEntity(ent);
+            dstManager.DestroyEntity(entity);
             tmpArr.Dispose();
         }
     }
