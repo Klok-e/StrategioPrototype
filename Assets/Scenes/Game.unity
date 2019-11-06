@@ -710,23 +710,33 @@ PrefabInstance:
       objectReference: {fileID: 1460097869}
     - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
         type: 3}
-      propertyPath: arenaMesh.mesh
-      value: 
-      objectReference: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+      propertyPath: side1Config.Array.data[1].tint.r
+      value: 0.057271298
+      objectReference: {fileID: 0}
     - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
         type: 3}
-      propertyPath: arenaMesh.material
-      value: 
-      objectReference: {fileID: 2100000, guid: 2eed3812f227eee499ed7608fa135440, type: 2}
+      propertyPath: side1Config.Array.data[1].tint.g
+      value: 0.17788094
+      objectReference: {fileID: 0}
     - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
         type: 3}
-      propertyPath: mainTex
-      value: 
-      objectReference: {fileID: 2800000, guid: 3aedc0b3e20bcc845a6d26522eabdd30, type: 3}
+      propertyPath: side1Config.Array.data[1].tint.b
+      value: 0.9339623
+      objectReference: {fileID: 0}
     - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
         type: 3}
-      propertyPath: influenceResolution
-      value: 4
+      propertyPath: side2Config.Array.data[1].tint.r
+      value: 0.9716981
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
+        type: 3}
+      propertyPath: side2Config.Array.data[1].tint.g
+      value: 0.050418302
+      objectReference: {fileID: 0}
+    - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
+        type: 3}
+      propertyPath: side2Config.Array.data[1].tint.b
+      value: 0.050418302
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eeebfaaeb34807c4181dcad5f7983bf7, type: 3}

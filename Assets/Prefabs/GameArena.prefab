@@ -44,12 +44,82 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74dbde70d57f5a418bca84f565680b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arenaMat: {fileID: 2100000, guid: 2eed3812f227eee499ed7608fa135440, type: 2}
-  arenaSprite: {fileID: 21300000, guid: 3aedc0b3e20bcc845a6d26522eabdd30, type: 3}
+  mainTex: {fileID: 2800000, guid: 3aedc0b3e20bcc845a6d26522eabdd30, type: 3}
+  arenaMesh:
+    mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+    material: {fileID: 2100000, guid: 2eed3812f227eee499ed7608fa135440, type: 2}
+    subMesh: 0
+    layer: 0
+    castShadows: 0
+    receiveShadows: 0
+  z: 0
   camera2D: {fileID: 0}
   mapSize:
     x: 50
     y: 50
+  influenceResolution: 4
+  side1Config:
+  - colliderRadius: 0
+    mainTex: {fileID: 0}
+    tint: {r: 0, g: 0, b: 0, a: 0}
+    mesh:
+      mesh: {fileID: 0}
+      material: {fileID: 0}
+      subMesh: 0
+      layer: 0
+      castShadows: 0
+      receiveShadows: 0
+    z: 0
+    influencerComponent:
+      num: 0
+    scale:
+      Value: 0
+  - colliderRadius: 1
+    mainTex: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
+    tint: {r: 0, g: 0, b: 0, a: 0}
+    mesh:
+      mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+      material: {fileID: 2100000, guid: e5de9439f92ee1e418b937b49c103c45, type: 2}
+      subMesh: 0
+      layer: 0
+      castShadows: 0
+      receiveShadows: 0
+    z: 0.2
+    influencerComponent:
+      num: 20
+    scale:
+      Value: 2
+  side2Config:
+  - colliderRadius: 0
+    mainTex: {fileID: 0}
+    tint: {r: 0, g: 0, b: 0, a: 0}
+    mesh:
+      mesh: {fileID: 0}
+      material: {fileID: 0}
+      subMesh: 0
+      layer: 0
+      castShadows: 0
+      receiveShadows: 0
+    z: 0
+    influencerComponent:
+      num: 0
+    scale:
+      Value: 0
+  - colliderRadius: 1
+    mainTex: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
+    tint: {r: 0, g: 0, b: 0, a: 0}
+    mesh:
+      mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+      material: {fileID: 2100000, guid: e5de9439f92ee1e418b937b49c103c45, type: 2}
+      subMesh: 0
+      layer: 0
+      castShadows: 0
+      receiveShadows: 0
+    z: 0.2
+    influencerComponent:
+      num: 20
+    scale:
+      Value: 2
 --- !u!114 &7440051767506930769
 MonoBehaviour:
   m_ObjectHideFlags: 0

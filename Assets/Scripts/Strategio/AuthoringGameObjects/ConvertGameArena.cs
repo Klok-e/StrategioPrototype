@@ -1,4 +1,6 @@
 ﻿using System;
+using Strategio.GameConfigs;
+using Strategio.Systems;
 using Strategio.Util;
 using Unity.Collections;
 using Unity.Entities;
@@ -10,12 +12,6 @@ using UnityEngine.Experimental.Rendering;
 
 namespace Strategio.AuthoringGameObjects
 {
-    public struct GameArenaComponent : IComponentData
-    {
-        public int2 mapSize;
-        public int influenceResolution;
-    }
-
     public struct GameArenaTag : IComponentData
     {
     }
@@ -42,14 +38,17 @@ namespace Strategio.AuthoringGameObjects
         [SerializeField]
         private int influenceResolution;
 
+        [SerializeField]
+        private UnitCommonConfig[] side1Config;
+
+        [SerializeField]
+        private UnitCommonConfig[] side2Config;
+
         public void Convert(Entity entity, EntityManager dstManager, GameObjectConversionSystem conversionSystem)
         {
-            var ent = dstManager.CreateEntity();
-            dstManager.AddComponentData(ent, new GameArenaComponent
-            {
-                influenceResolution = influenceResolution,
-                mapSize = mapSize,
-            });
+            dstManager.World.GetOrCreateSystem<InitDataSystem>()
+                      .Init(mapSize, influenceResolution, side1Config, side2Config);
+            UnitTypeConverter.InitArchetypes(dstManager);
 
             camera2D.maxZoom = math.min(mapSize.x / 3, mapSize.y / 3);
             camera2D.cameraMaxX = mapSize.x - mapSize.x / 2f;

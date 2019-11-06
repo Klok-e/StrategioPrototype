@@ -51,9 +51,7 @@ namespace Strategio.GameConfigs
             return x;
         }
 
-        public static EntityArchetype[] archetypes;
-
-        public static void InitArchetypes(EntityManager manager)
+        public static EntityArchetype[] InitArchetypes(EntityManager manager)
         {
             var lst = new List<EntityArchetype>
             {
@@ -82,12 +80,17 @@ namespace Strategio.GameConfigs
                     ComponentType.ReadWrite<LocalToWorld>(),
                     ComponentType.ReadWrite<Rotation>())
             };
-            archetypes = lst.ToArray();
+            return lst.ToArray();
         }
 
         public static EntityArchetype GetArchetype(this UnitType unit, NativeArray<EntityArchetype> archs)
         {
             return archs[(int) unit - 1];
+        }
+
+        public static UnitCommonConfig GetConfig(this UnitType unit, UnitCommonConfig[] configs)
+        {
+            return configs[(int) unit - 1];
         }
     }
 }
