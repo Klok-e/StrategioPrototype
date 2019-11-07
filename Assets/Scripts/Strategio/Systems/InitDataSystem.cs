@@ -23,7 +23,7 @@ namespace Strategio.Systems
 
         public Texture2D InfluenceTexture { get; private set; }
 
-        public NativeArray2D<int> Influences { get; private set; }
+        public NativeArray2D<float> Influences { get; private set; }
 
         public UnitCommonConfig[] side1Config;
 
@@ -43,7 +43,7 @@ namespace Strategio.Systems
             InfluenceTexture = new Texture2D(MapSize.x * MapResolution, MapSize.y * MapResolution,
                 GraphicsFormat.R32_SFloat,
                 TextureCreationFlags.None);
-            Influences = new NativeArray2D<int>(MapSize.x * MapResolution, MapSize.y * MapResolution,
+            Influences = new NativeArray2D<float>(MapSize.x * MapResolution, MapSize.y * MapResolution,
                 Allocator.Persistent);
             archetypes =
                 new NativeArray<EntityArchetype>(UnitTypeUtil.InitArchetypes(EntityManager), Allocator.Persistent);
@@ -83,18 +83,9 @@ namespace Strategio.Systems
                         spawnProgress = 0,
                         unitType = UnitType.Simple,
                     });
-                EntityManager.SetComponentData(ent, new UnitComponent {unitType = UnitType.Spawner});
-                EntityManager.SetComponentData(ent, new CircleColliderComponent {radius = config.colliderRadius});
-                EntityManager.SetComponentData(ent, config.influencerComponent);
-                EntityManager.SetComponentData(ent, needSpawn.side);
-                EntityManager.SetComponentData(ent, new PathfindingComponent {isOrderedToMove = 0});
-                var pos = needSpawn.position;
-                pos.z = config.z;
-                EntityManager.SetComponentData(ent, new Translation {Value = pos});
-                EntityManager.SetSharedComponentData(ent, config.mesh);
-                EntityManager.SetComponentData(ent, config.scale);
-
                 EntityManager.AddComponentData(ent, new PlayerCanOrderToMoveComponentTag());
+                UnitTypeUtil.SetCommonConfigComponentsToEntity(EntityManager, ent, config, needSpawn.position,
+                    needSpawn.side);
 
                 PostUpdateCommands.DestroyEntity(entToDel);
             });

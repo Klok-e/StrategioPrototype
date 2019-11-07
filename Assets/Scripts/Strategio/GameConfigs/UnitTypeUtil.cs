@@ -3,6 +3,7 @@ using Strategio.Components;
 using Strategio.Components.Physics;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
@@ -76,8 +77,20 @@ namespace Strategio.GameConfigs
             return lst.ToArray();
         }
 
-        public static void SetCommonConfigComponentsToEntity(EntityManager manager, Entity entity, UnitCommonConfig config)
+        public static void SetCommonConfigComponentsToEntity(EntityManager manager, Entity entity,
+                                                             UnitCommonConfig config, float3 position,
+                                                             SideComponent side)
         {
+            manager.SetComponentData(entity, new UnitComponent {unitType = UnitType.Spawner});
+            manager.SetComponentData(entity, new CircleColliderComponent {radius = config.colliderRadius});
+            manager.SetComponentData(entity, config.influencerComponent);
+            manager.SetComponentData(entity, side);
+            manager.SetComponentData(entity, new PathfindingComponent {isOrderedToMove = 0});
+            var pos = position;
+            pos.z = config.z;
+            manager.SetComponentData(entity, new Translation {Value = pos});
+            manager.SetSharedComponentData(entity, config.mesh);
+            manager.SetComponentData(entity, config.scale);
         }
 
         public static EntityArchetype GetArchetype(this UnitType unit, NativeArray<EntityArchetype> archs)

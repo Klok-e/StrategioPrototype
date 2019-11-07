@@ -7,6 +7,6 @@ namespace Strategio.Components
     [Serializable]
     public struct InfluencerComponent : IComponentData
     {
-        public int num;
+        public float num;
     }
 }

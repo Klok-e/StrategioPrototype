@@ -14,7 +14,7 @@ namespace Strategio.Systems
     [AlwaysUpdateSystem]
     public class SetInfluenceTextureSystem : JobComponentSystem
     {
-        public const int InfluenceCutoff = 20;
+        public const float InfluenceCutoff = 20f;
         public JobHandle LatestJob { get; private set; }
 
         //cached stuff
@@ -45,16 +45,16 @@ namespace Strategio.Systems
         [BurstCompile]
         private struct SetTextureJob : IJobParallelFor
         {
-            public int cutoff;
+            public float cutoff;
 
             public NativeArray<float> texture;
 
-            [ReadOnly] public NativeArray2D<int> influences;
+            [ReadOnly] public NativeArray2D<float> influences;
 
             public void Execute(int index)
             {
-                int clamped = math.clamp(influences[index], -cutoff, cutoff);
-                float val = (float) (clamped + cutoff) / (cutoff * 2);
+                float clamped = math.clamp(influences[index], -cutoff, cutoff);
+                float val = (clamped + cutoff) / (cutoff * 2);
                 texture[index] = val;
             }
         }

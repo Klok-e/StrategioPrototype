@@ -14,7 +14,9 @@ namespace Strategio.Systems
     [AlwaysUpdateSystem]
     public class InfluenceSystem : JobComponentSystem
     {
-        public const int Falloff = 1;
+        public const float Falloff = 1f;
+        public const float InfluenceFade = 1.1f;
+
         public JobHandle LatestJob { get; private set; }
         private InitDataSystem _dataSystem;
         private SetInfluenceTextureSystem _influenceTextureSystem;
@@ -87,8 +89,8 @@ namespace Strategio.Systems
             public int mapRes;
 
             public void Execute([ReadOnly] ref InfluencerComponent infl,
-                [ReadOnly] ref Translation transl,
-                [ReadOnly] ref SideComponent side)
+                                [ReadOnly] ref Translation transl,
+                                [ReadOnly] ref SideComponent side)
             {
                 var inflCpy = infl;
                 inflCpy.num *= mapRes;
@@ -118,14 +120,15 @@ namespace Strategio.Systems
         [BurstCompile]
         private struct SetInfluenceArrayJob : IJobParallelFor
         {
-            [WriteOnly] public NativeArray2D<int> influencesMap;
+            public NativeArray2D<float> influencesMap;
 
-            [ReadOnly] public NativeList<InflPosSide> influencers;
+            [ReadOnly]
+            public NativeList<InflPosSide> influencers;
 
             public void Execute(int index)
             {
                 influencesMap.At(index, out int x, out int y);
-                int sum = 0;
+                float sum = 0f;
                 for (int i = 0; i < influencers.Length; i++)
                 {
                     var t = influencers[i];
@@ -134,12 +137,12 @@ namespace Strategio.Systems
                     var side = t.side;
                     int sideMul = side.side == Side.Player1 ? 1 : -1;
                     float dist = math.distance(math.float2(x, y), math.float2(pos));
-                    sum += math.max(0, (int) (infl.num - dist * Falloff)) * sideMul;
-                    if ((infl.num - dist * Falloff) > 0)
-                        continue;
+                    sum += math.max(0, infl.num - dist * Falloff) * sideMul;
+                    //if (infl.num - dist * Falloff > 0)
+                    //    continue;
                 }
 
-                influencesMap[index] = sum;
+                influencesMap[index] = sum + influencesMap[index] / InfluenceFade;
             }
         }
 
