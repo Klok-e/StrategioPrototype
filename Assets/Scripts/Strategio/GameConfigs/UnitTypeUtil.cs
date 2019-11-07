@@ -26,7 +26,7 @@ namespace Strategio.GameConfigs
                         attack = 1f,
                         health = 5f,
                         moveSpeed = 0.5f,
-                        requiredProgress = 0.5f,
+                        requiredProgressToSpawn = 0.5f,
                     };
                     break;
                 case UnitType.Spawner:
@@ -35,7 +35,7 @@ namespace Strategio.GameConfigs
                         attack = 1f,
                         health = 100f,
                         moveSpeed = 0.1f,
-                        requiredProgress = 50f,
+                        requiredProgressToSpawn = 50f,
                     };
                     break;
             }
@@ -79,9 +79,9 @@ namespace Strategio.GameConfigs
 
         public static void SetCommonConfigComponentsToEntity(EntityManager manager, Entity entity,
                                                              UnitCommonConfig config, float3 position,
-                                                             SideComponent side)
+                                                             SideComponent side, UnitType unitType)
         {
-            manager.SetComponentData(entity, new UnitComponent {unitType = UnitType.Spawner});
+            manager.SetComponentData(entity, new UnitComponent {unitType = unitType});
             manager.SetComponentData(entity, new CircleColliderComponent {radius = config.colliderRadius});
             manager.SetComponentData(entity, config.influencerComponent);
             manager.SetComponentData(entity, side);
@@ -91,6 +91,22 @@ namespace Strategio.GameConfigs
             manager.SetComponentData(entity, new Translation {Value = pos});
             manager.SetSharedComponentData(entity, config.mesh);
             manager.SetComponentData(entity, config.scale);
+        }
+
+        public static void SetCommonConfigComponentsToEntity(EntityCommandBuffer manager, Entity entity,
+                                                             UnitCommonConfig config, float3 position,
+                                                             SideComponent side, UnitType unitType)
+        {
+            manager.SetComponent(entity, new UnitComponent {unitType = unitType});
+            manager.SetComponent(entity, new CircleColliderComponent {radius = config.colliderRadius});
+            manager.SetComponent(entity, config.influencerComponent);
+            manager.SetComponent(entity, side);
+            manager.SetComponent(entity, new PathfindingComponent {isOrderedToMove = 0});
+            var pos = position;
+            pos.z = config.z;
+            manager.SetComponent(entity, new Translation {Value = pos});
+            manager.SetSharedComponent(entity, config.mesh);
+            manager.SetComponent(entity, config.scale);
         }
 
         public static EntityArchetype GetArchetype(this UnitType unit, NativeArray<EntityArchetype> archs)

@@ -6,7 +6,7 @@ namespace Strategio.GameConfigs
     {
         public float moveSpeed;
         public float attack;
-        public float requiredProgress;
+        public float requiredProgressToSpawn;
         public float health;
     }
 }

@@ -59,24 +59,24 @@ MonoBehaviour:
     y: 50
   influenceResolution: 4
   side1Config:
-  - colliderRadius: 0
-    mainTex: {fileID: 0}
-    tint: {r: 0, g: 0, b: 0, a: 0}
+  - colliderRadius: 1
+    mainTex: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
+    tint: {r: 0.04045032, g: 0.08570274, b: 0.9528302, a: 0}
     mesh:
-      mesh: {fileID: 0}
-      material: {fileID: 0}
+      mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+      material: {fileID: 2100000, guid: e5de9439f92ee1e418b937b49c103c45, type: 2}
       subMesh: 0
       layer: 0
       castShadows: 0
       receiveShadows: 0
-    z: 0
+    z: 0.2
     influencerComponent:
-      num: 0
+      num: 10
     scale:
-      Value: 0
+      Value: 1
   - colliderRadius: 1
     mainTex: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
-    tint: {r: 0, g: 0, b: 0, a: 0}
+    tint: {r: 0.057271298, g: 0.17788094, b: 0.9339623, a: 0}
     mesh:
       mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
       material: {fileID: 2100000, guid: e5de9439f92ee1e418b937b49c103c45, type: 2}
@@ -90,24 +90,24 @@ MonoBehaviour:
     scale:
       Value: 2
   side2Config:
-  - colliderRadius: 0
-    mainTex: {fileID: 0}
-    tint: {r: 0, g: 0, b: 0, a: 0}
+  - colliderRadius: 1
+    mainTex: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
+    tint: {r: 0.9433962, g: 0.04004982, b: 0.04004982, a: 0}
     mesh:
-      mesh: {fileID: 0}
-      material: {fileID: 0}
+      mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+      material: {fileID: 2100000, guid: e5de9439f92ee1e418b937b49c103c45, type: 2}
       subMesh: 0
       layer: 0
       castShadows: 0
       receiveShadows: 0
-    z: 0
+    z: 0.2
     influencerComponent:
-      num: 0
+      num: 10
     scale:
-      Value: 0
+      Value: 1
   - colliderRadius: 1
     mainTex: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
-    tint: {r: 0, g: 0, b: 0, a: 0}
+    tint: {r: 0.9716981, g: 0.050418302, b: 0.050418302, a: 0}
     mesh:
       mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
       material: {fileID: 2100000, guid: e5de9439f92ee1e418b937b49c103c45, type: 2}

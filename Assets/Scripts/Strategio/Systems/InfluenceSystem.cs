@@ -28,8 +28,8 @@ namespace Strategio.Systems
         protected override void OnCreate()
         {
             base.OnCreate();
-            _dataSystem = EntityManager.World.GetOrCreateSystem<InitDataSystem>();
-            _influenceTextureSystem = EntityManager.World.GetOrCreateSystem<SetInfluenceTextureSystem>();
+            _dataSystem = World.GetOrCreateSystem<InitDataSystem>();
+            _influenceTextureSystem = World.GetOrCreateSystem<SetInfluenceTextureSystem>();
 
             _inflQueue = new NativeQueue<InflPosSide>(Allocator.Persistent);
             _inflList = new NativeList<InflPosSide>(Allocator.Persistent);

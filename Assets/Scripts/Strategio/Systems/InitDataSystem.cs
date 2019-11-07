@@ -25,20 +25,20 @@ namespace Strategio.Systems
 
         public NativeArray2D<float> Influences { get; private set; }
 
-        public UnitCommonConfig[] side1Config;
+        public UnitCommonConfig[] Side1Configs { get; private set; }
 
-        public UnitCommonConfig[] side2Config;
+        public UnitCommonConfig[] Side2Configs { get; private set; }
 
         public NativeArray<EntityArchetype> archetypes;
 
         public void Init(int2 mapSize, int influenceResolution,
-                         UnitCommonConfig[] side1Config,
-                         UnitCommonConfig[] side2Config)
+                         UnitCommonConfig[] side1Configs,
+                         UnitCommonConfig[] side2Configs)
         {
             MapSize = mapSize;
             MapResolution = influenceResolution;
-            this.side1Config = side1Config;
-            this.side2Config = side2Config;
+            Side1Configs = side1Configs;
+            Side2Configs = side2Configs;
 
             InfluenceTexture = new Texture2D(MapSize.x * MapResolution, MapSize.y * MapResolution,
                 GraphicsFormat.R32_SFloat,
@@ -47,33 +47,57 @@ namespace Strategio.Systems
                 Allocator.Persistent);
             archetypes =
                 new NativeArray<EntityArchetype>(UnitTypeUtil.InitArchetypes(EntityManager), Allocator.Persistent);
+            foreach (var configs in new[] {side1Configs, side2Configs})
+                for (int i = 0; i < configs.Length; i++)
+                {
+                    //TODO: wait until Unity decides to implement PerRendererData and MaterialPropertyBlock in ECS or do it myself
+                    var mat = new Material(configs[i].mesh.material) {mainTexture = configs[i].mainTex};
+                    mat.SetColor("_TintColor", configs[i].tint);
+                    configs[i].mesh.material = mat;
+                }
+        }
+
+        public UnitCommonConfig GetConfigForUnitType(UnitType unitType, Side side)
+        {
+            UnitCommonConfig config;
+            switch (side)
+            {
+                case Side.Player1:
+                    config = unitType.GetConfig(Side1Configs);
+                    break;
+                case Side.Player2:
+                    config = unitType.GetConfig(Side1Configs);
+                    break;
+                case Side.Invalid:
+                    throw new ArgumentOutOfRangeException(nameof(side), side, null);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(side), side, null);
+            }
+
+            return config;
         }
 
         protected override void OnUpdate()
         {
             Entities.ForEach((Entity entToDel, ref NeedSpawnSpawnerComponent needSpawn) =>
             {
+                //TODO: use GetConfigForUnitType
                 UnitCommonConfig[] configs;
                 switch (needSpawn.side.side)
                 {
                     case Side.Invalid:
                         throw new ArgumentOutOfRangeException();
                     case Side.Player1:
-                        configs = side1Config;
+                        configs = Side1Configs;
                         break;
                     case Side.Player2:
-                        configs = side2Config;
+                        configs = Side2Configs;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
                 var config = UnitType.Spawner.GetConfig(configs);
-
-                //TODO: wait until Unity decides to implement PerRendererData and MaterialPropertyBlock in ECS or do it myself
-                var mat = new Material(config.mesh.material) {mainTexture = config.mainTex};
-                mat.SetColor("_TintColor", config.tint);
-                config.mesh.material = mat;
 
                 var ent = EntityManager.CreateEntity(UnitType.Spawner.GetArchetype(archetypes));
 
@@ -85,7 +109,7 @@ namespace Strategio.Systems
                     });
                 EntityManager.AddComponentData(ent, new PlayerCanOrderToMoveComponentTag());
                 UnitTypeUtil.SetCommonConfigComponentsToEntity(EntityManager, ent, config, needSpawn.position,
-                    needSpawn.side);
+                    needSpawn.side, UnitType.Spawner);
 
                 PostUpdateCommands.DestroyEntity(entToDel);
             });

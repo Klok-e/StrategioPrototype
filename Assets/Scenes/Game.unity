@@ -708,35 +708,5 @@ PrefabInstance:
       propertyPath: camera2D
       value: 
       objectReference: {fileID: 1460097869}
-    - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
-        type: 3}
-      propertyPath: side1Config.Array.data[1].tint.r
-      value: 0.057271298
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
-        type: 3}
-      propertyPath: side1Config.Array.data[1].tint.g
-      value: 0.17788094
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
-        type: 3}
-      propertyPath: side1Config.Array.data[1].tint.b
-      value: 0.9339623
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
-        type: 3}
-      propertyPath: side2Config.Array.data[1].tint.r
-      value: 0.9716981
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
-        type: 3}
-      propertyPath: side2Config.Array.data[1].tint.g
-      value: 0.050418302
-      objectReference: {fileID: 0}
-    - target: {fileID: 7440051767506930768, guid: eeebfaaeb34807c4181dcad5f7983bf7,
-        type: 3}
-      propertyPath: side2Config.Array.data[1].tint.b
-      value: 0.050418302
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eeebfaaeb34807c4181dcad5f7983bf7, type: 3}
