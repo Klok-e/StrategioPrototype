@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Strategio.Components;
 using Strategio.Components.Physics;
 using Unity.Burst;
@@ -11,10 +12,12 @@ using UnityEngine;
 
 namespace Strategio.Systems.Physics
 {
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
     public class CircleCollideSystem : JobComponentSystem
     {
         private EntityQuery _colliders;
         private EndSimulationEntityCommandBufferSystem _barrier;
+        private InitDataSystem _dataSystem;
 
         // cached
         private NativeQueue<CollisionComponent> _queue;
@@ -22,10 +25,11 @@ namespace Strategio.Systems.Physics
         protected override void OnCreate()
         {
             base.OnCreate();
-            _colliders = EntityManager.CreateEntityQuery(ComponentType.ReadOnly<CircleColliderComponent>(),
+            _colliders = GetEntityQuery(ComponentType.ReadOnly<CircleColliderComponent>(),
                 ComponentType.ReadOnly<Translation>());
             _barrier = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
             _queue = new NativeQueue<CollisionComponent>(Allocator.Persistent);
+            _dataSystem = World.GetOrCreateSystem<InitDataSystem>();
         }
 
         protected override void OnDestroy()
@@ -38,13 +42,17 @@ namespace Strategio.Systems.Physics
         {
             var transl = _colliders.ToComponentDataArray<Translation>(Allocator.TempJob);
             var colls = _colliders.ToComponentDataArray<CircleColliderComponent>(Allocator.TempJob);
+            var max = math.float2(_dataSystem.MapSize / 2);
+            var min =  math.float2(_dataSystem.MapSize / 2 - _dataSystem.MapSize);
             var j1 = new CollideJob
             {
                 entities = _colliders.ToEntityArray(Allocator.TempJob),
                 count = transl.Length,
                 translations = transl,
                 colliders = colls,
-                collisions = _queue.AsParallelWriter()
+                collisions = _queue.AsParallelWriter(),
+                maxPos = max,
+                minPos = min,
             };
             var j2 = new CreateEntityJob
             {
@@ -62,6 +70,9 @@ namespace Strategio.Systems.Physics
         {
             public int count;
 
+            public float2 minPos;
+            public float2 maxPos;
+
             [DeallocateOnJobCompletion]
             public NativeArray<Entity> entities;
 
@@ -75,6 +86,8 @@ namespace Strategio.Systems.Physics
 
             public void Execute(int i1)
             {
+                
+                
                 //TODO: optimize naive method
                 for (int i2 = i1 + 1; i2 < count; i2++)
                 {
@@ -82,9 +95,13 @@ namespace Strategio.Systems.Physics
                     var i2t = translations[i2].Value;
                     if (math.distance(i1t, i2t) >= colliders[i1].radius + colliders[i2].radius) continue;
 
+                    var dir = (i2t - i1t).xy;
+                    dir = math.abs(math.abs(dir.x) + math.abs(dir.y)) > 0.0001f
+                        ? math.normalize(dir)
+                        : math.float2(1f, 0f);
                     collisions.Enqueue(new CollisionComponent
                     {
-                        ent1ToEnt2Dir = (i2t - i1t).xy,
+                        ent1ToEnt2Dir = dir,
                         ent1 = entities[i1],
                         ent2 = entities[i2],
                     });

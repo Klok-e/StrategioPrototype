@@ -7,6 +7,7 @@ using Unity.Transforms;
 
 namespace Strategio.Systems.Physics
 {
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
     public class CircleCollisionResolveSystem : JobComponentSystem
     {
         public const float RepulsionPower = 0.08f;
