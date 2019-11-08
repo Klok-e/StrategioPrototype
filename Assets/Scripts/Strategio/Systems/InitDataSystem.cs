@@ -81,23 +81,7 @@ namespace Strategio.Systems
         {
             Entities.ForEach((Entity entToDel, ref NeedSpawnSpawnerComponent needSpawn) =>
             {
-                //TODO: use GetConfigForUnitType
-                UnitCommonConfig[] configs;
-                switch (needSpawn.side.side)
-                {
-                    case Side.Invalid:
-                        throw new ArgumentOutOfRangeException();
-                    case Side.Player1:
-                        configs = Side1Configs;
-                        break;
-                    case Side.Player2:
-                        configs = Side2Configs;
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-
-                var config = UnitType.Spawner.GetConfig(configs);
+                var config = GetConfigForUnitType(UnitType.Spawner,needSpawn.side.side);
 
                 var ent = EntityManager.CreateEntity(UnitType.Spawner.GetArchetype(archetypes));
 

@@ -21,8 +21,6 @@ namespace Strategio.Systems
 
         protected override void OnUpdate()
         {
-            var archs = _dataSystem.archetypes;
-
             Entities.ForEach((ref SpawnerComponent spawner, ref SideComponent sideComponent,
                               ref Translation translation) =>
             {
@@ -30,7 +28,7 @@ namespace Strategio.Systems
                 {
                     spawner.spawnProgress = 0f;
 
-                    var ent = PostUpdateCommands.CreateEntity(spawner.unitType.GetArchetype(archs));
+                    var ent = PostUpdateCommands.CreateEntity(spawner.unitType.GetArchetype(_dataSystem.archetypes));
                     var config = _dataSystem.GetConfigForUnitType(spawner.unitType, sideComponent.side);
                     UnitTypeUtil.SetCommonConfigComponentsToEntity(PostUpdateCommands, ent, config, translation.Value,
                         sideComponent, spawner.unitType);
