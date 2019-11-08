@@ -17,7 +17,6 @@ namespace Strategio.Systems.Physics
     {
         private EntityQuery _colliders;
         private EndSimulationEntityCommandBufferSystem _barrier;
-        private InitDataSystem _dataSystem;
 
         // cached
         private NativeQueue<CollisionComponent> _queue;
@@ -29,7 +28,6 @@ namespace Strategio.Systems.Physics
                 ComponentType.ReadOnly<Translation>());
             _barrier = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
             _queue = new NativeQueue<CollisionComponent>(Allocator.Persistent);
-            _dataSystem = World.GetOrCreateSystem<InitDataSystem>();
         }
 
         protected override void OnDestroy()
@@ -42,8 +40,6 @@ namespace Strategio.Systems.Physics
         {
             var transl = _colliders.ToComponentDataArray<Translation>(Allocator.TempJob);
             var colls = _colliders.ToComponentDataArray<CircleColliderComponent>(Allocator.TempJob);
-            var max = math.float2(_dataSystem.MapSize / 2);
-            var min =  math.float2(_dataSystem.MapSize / 2 - _dataSystem.MapSize);
             var j1 = new CollideJob
             {
                 entities = _colliders.ToEntityArray(Allocator.TempJob),
@@ -51,8 +47,6 @@ namespace Strategio.Systems.Physics
                 translations = transl,
                 colliders = colls,
                 collisions = _queue.AsParallelWriter(),
-                maxPos = max,
-                minPos = min,
             };
             var j2 = new CreateEntityJob
             {
@@ -70,9 +64,6 @@ namespace Strategio.Systems.Physics
         {
             public int count;
 
-            public float2 minPos;
-            public float2 maxPos;
-
             [DeallocateOnJobCompletion]
             public NativeArray<Entity> entities;
 
@@ -86,12 +77,10 @@ namespace Strategio.Systems.Physics
 
             public void Execute(int i1)
             {
-                
-                
                 //TODO: optimize naive method
+                var i1t = translations[i1].Value;
                 for (int i2 = i1 + 1; i2 < count; i2++)
                 {
-                    var i1t = translations[i1].Value;
                     var i2t = translations[i2].Value;
                     if (math.distance(i1t, i2t) >= colliders[i1].radius + colliders[i2].radius) continue;
 
