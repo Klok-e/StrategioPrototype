@@ -14,7 +14,7 @@ namespace Strategio.Systems
     [AlwaysUpdateSystem]
     public class SetInfluenceTextureSystem : JobComponentSystem
     {
-        public const float InfluenceCutoff = 20f;
+        public const float InfluenceCutoff = 60f;
         public JobHandle LatestJob { get; private set; }
 
         //cached stuff

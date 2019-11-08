@@ -47,14 +47,25 @@ namespace Strategio.Systems
                 Allocator.Persistent);
             archetypes =
                 new NativeArray<EntityArchetype>(UnitTypeUtil.InitArchetypes(EntityManager), Allocator.Persistent);
+            int it = 0;
             foreach (var configs in new[] {side1Configs, side2Configs})
+            {
                 for (int i = 0; i < configs.Length; i++)
                 {
                     //TODO: wait until Unity decides to implement PerRendererData and MaterialPropertyBlock in ECS or do it myself
-                    var mat = new Material(configs[i].mesh.material) {mainTexture = configs[i].mainTex};
+                    var config = configs[i];
+                    var mat = new Material(config.mesh.material)
+                    {
+                        mainTexture = config.mainTex,
+                        name = $"mat {config.mesh.material.name} for unit {i} side {it}"
+                    };
                     mat.SetColor("_TintColor", configs[i].tint);
-                    configs[i].mesh.material = mat;
+                    config.mesh.material = mat;
+                    configs[i] = config;
                 }
+
+                it += 1;
+            }
         }
 
         public UnitCommonConfig GetConfigForUnitType(UnitType unitType, Side side)
@@ -66,7 +77,7 @@ namespace Strategio.Systems
                     config = unitType.GetConfig(Side1Configs);
                     break;
                 case Side.Player2:
-                    config = unitType.GetConfig(Side1Configs);
+                    config = unitType.GetConfig(Side2Configs);
                     break;
                 case Side.Invalid:
                     throw new ArgumentOutOfRangeException(nameof(side), side, null);
@@ -81,10 +92,8 @@ namespace Strategio.Systems
         {
             Entities.ForEach((Entity entToDel, ref NeedSpawnSpawnerComponent needSpawn) =>
             {
-                var config = GetConfigForUnitType(UnitType.Spawner,needSpawn.side.side);
-
+                var config = GetConfigForUnitType(UnitType.Spawner, needSpawn.side.side);
                 var ent = EntityManager.CreateEntity(UnitType.Spawner.GetArchetype(archetypes));
-
                 EntityManager.SetComponentData(ent,
                     new SpawnerComponent
                     {
