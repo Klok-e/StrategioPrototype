@@ -65,12 +65,15 @@ namespace Strategio.Systems.Physics
             public int count;
 
             [DeallocateOnJobCompletion]
+            [ReadOnly]
             public NativeArray<Entity> entities;
 
             [DeallocateOnJobCompletion]
+            [ReadOnly]
             public NativeArray<Translation> translations;
 
             [DeallocateOnJobCompletion]
+            [ReadOnly]
             public NativeArray<CircleColliderComponent> colliders;
 
             public NativeQueue<CollisionComponent>.ParallelWriter collisions;

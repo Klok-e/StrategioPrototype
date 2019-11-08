@@ -59,7 +59,7 @@ MonoBehaviour:
     y: 50
   influenceResolution: 4
   side1Config:
-  - colliderRadius: 1
+  - colliderRadius: 0.5
     mainTex: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
     tint: {r: 0.04045032, g: 0.08570274, b: 0.9528302, a: 0}
     mesh:
@@ -90,7 +90,7 @@ MonoBehaviour:
     scale:
       Value: 2
   side2Config:
-  - colliderRadius: 1
+  - colliderRadius: 0.5
     mainTex: {fileID: 2800000, guid: 4a932d3ce1810cf4fad9bd6cb2710e92, type: 3}
     tint: {r: 0.9433962, g: 0.04004982, b: 0.04004982, a: 0}
     mesh:
