@@ -37,7 +37,7 @@ namespace Strategio.Systems
                 influences = _dataSystem.Influences,
                 cutoff = InfluenceCutoff * _dataSystem.MapResolution,
             };
-            LatestJob = j1.Schedule(tex.Length, 128,
+            LatestJob = j1.Schedule(tex.Length, 256,
                 JobHandle.CombineDependencies(inputDeps, _influenceSystem.LatestJob));
             return LatestJob;
         }

@@ -58,7 +58,7 @@ public class DragCamera2D : MonoBehaviour
     //click and drag
     public void panControl() {
         // if mouse is down
-        if (Input.GetMouseButton(0)) {
+        if (Input.GetMouseButton(2)) {
             float x = Input.GetAxis("Mouse X") * panSpeed;
             float y = Input.GetAxis("Mouse Y") * panSpeed;
 

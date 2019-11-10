@@ -20,6 +20,7 @@
               <e p="ConvertSpawnerEntity.cs" t="Include" />
             </e>
             <e p="Components" t="Include">
+              <e p="AiComponent.cs" t="Include" />
               <e p="InfluencerComponent.cs" t="Include" />
               <e p="PathfindingComponent.cs" t="Include" />
               <e p="Physics" t="Include">
@@ -35,6 +36,7 @@
               <e p="UnitComponent.cs" t="Include" />
             </e>
             <e p="GameConfigs" t="Include">
+              <e p="AiStates.cs" t="Include" />
               <e p="Sides.cs" t="Include" />
               <e p="UnitCommonConfig.cs" t="Include" />
               <e p="UnitStats.cs" t="Include" />
@@ -42,6 +44,7 @@
               <e p="UnitTypeUtil.cs" t="Include" />
             </e>
             <e p="Systems" t="Include">
+              <e p="AiSystem.cs" t="Include" />
               <e p="ApplyTextureSystem.cs" t="Include" />
               <e p="InfluenceSystem.cs" t="Include" />
               <e p="InitDataSystem.cs" t="Include" />

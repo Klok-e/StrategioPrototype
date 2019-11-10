@@ -67,7 +67,7 @@ namespace Strategio.Systems
                 inflList = _inflList
             };
             LatestJob = j4.Schedule(
-                j3.Schedule(infls.XMax * infls.YMax, 128,
+                j3.Schedule(infls.XMax * infls.YMax, 256,
                     j2.Schedule(
                         j1.Schedule(this,
                             JobHandle.CombineDependencies(inputDeps, _influenceTextureSystem.LatestJob)))));
