@@ -36,7 +36,7 @@
             </e>
             <e p="GameConfigs" t="Include">
               <e p="Sides.cs" t="Include" />
-              <e p="UnitRenderConfig.cs" t="Include" />
+              <e p="UnitCommonConfig.cs" t="Include" />
               <e p="UnitStats.cs" t="Include" />
               <e p="UnitTypes.cs" t="Include" />
               <e p="UnitTypeUtil.cs" t="Include" />
